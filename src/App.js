@@ -1,23 +1,14 @@
-import logo from './logo.svg';
-import './App.css';
+import MyPlayer from "./components/MyPlayer";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <MyPlayer
+        songName="Perfect"
+        artistName="Ed Sheeran"
+        filePath="https://vjsbuilds.stag-os.org/mmt/audio/song/perfect.mp3"
+        albumArt="/songs/perfect/perfect.jpeg"
+      />
     </div>
   );
 }
