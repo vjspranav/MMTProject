@@ -1,16 +1,12 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import { Button, IconButton } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { PauseCircle } from "@mui/icons-material";
 import Slider from "@mui/material/Slider";
 import CircularProgress from "@mui/material/CircularProgress";
-import TextField from "@mui/material/TextField";
-import Stack from "@mui/material/Stack";
+import { Chip } from "@mui/material";
 
 import TimeField from "react-simple-timefield";
 
@@ -26,6 +22,8 @@ export default function MyPlayer(props) {
   const [startTime, setStartTime] = React.useState(0);
   const [endTime, setEndTime] = React.useState(0);
   const [currentTime, setCurrentTime] = React.useState(0);
+  const [durationData, setDurationData] = React.useState([]);
+
   audio.oncanplay = () => {
     setLoading(false);
     setEndTime(audio.duration);
@@ -41,196 +39,196 @@ export default function MyPlayer(props) {
       setCurrentTime(audio.currentTime);
     }
   };
+
+  const deleteChip = (id) => {
+    setDurationData(durationData.filter((_, ind) => ind !== id));
+  };
+
   return (
     // Center the player in the page
     // Vertically center the player in the page
     <div>
       {loading ? (
-        <Card
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            margin: "20%",
-            width: "50%",
-            height: "200px",
-            backgroundColor: loading ? "rgba(0, 0, 0, 0.5)" : "",
-          }}
-        >
-          <CircularProgress />
-        </Card>
+        // <Card
+        //   sx={{
+        //     display: "flex",
+        //     justifyContent: "center",
+        //     alignItems: "center",
+        //     margin: "20%",
+        //     width: "50%",
+        //     height: "200px",
+        //     backgroundColor: "rgba(0, 0, 0, 0.5)",
+        //   }}
+        // >
+        <CircularProgress />
       ) : (
+        // {/* </Card> */}
         <Card
           sx={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            margin: "20%",
+            margin: "auto",
             width: "50%",
-            backgroundColor: loading ? "rgba(0, 0, 0, 0.5)" : "",
+            padding: "40px",
           }}
         >
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Stack spacing={3} alignItems="center">
-              <CardContent sx={{ flex: "1 0 auto" }}>
-                <Typography id="songName" component="div" variant="h5">
-                  {songName}
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  color="text.secondary"
-                  component="div"
-                >
-                  {artistName}
-                </Typography>
-              </CardContent>
-              <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
-                <IconButton
-                  aria-label="play/pause"
-                  onClick={() => {
-                    if (audio.paused) {
-                      audio.play();
-                      setIsPlaying(true);
-                      // setAudio(audio);
-                    } else {
-                      audio.pause();
-                      setIsPlaying(false);
-                      // setAudio(audio);
-                    }
-                  }}
-                >
-                  {!isPlaying ? (
-                    <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-                  ) : (
-                    <PauseCircle sx={{ height: 38, width: 38 }} />
-                  )}
-                </IconButton>
-              </Box>
-              <Stack spacing={2} direction="row" alignItems="center">
-                <Box sx={{ width: "147px", margin: "0", flexDirection: "row" }}>
-                  <div style={{ width: "100%", height: "100%", flex: 1 }}>
-                    {Math.floor(currentTime / 60) +
-                      ":" +
-                      ("0" + `${Math.floor(currentTime % 60)}`).slice(-2) +
-                      " / " +
-                      Math.floor(audio.duration / 60) +
-                      ":" +
-                      ("0" + `${Math.floor(audio.duration % 60)}`).slice(-2)}
-                  </div>
-                </Box>
-                <Slider
-                  value={currentTime}
-                  min={0}
-                  max={audio.duration}
-                  size="small"
-                  valueLabelFormat={(value) =>
-                    ("0" + `${Math.floor(value / 60)}`).slice(-2) +
-                    ":" +
-                    ("0" + `${Math.floor(value % 60)}`).slice(-2)
+          <div style={{ display: "flex", width: "100%", alignItems: "center" }}>
+            <div
+              style={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "flex-start",
+              }}
+            >
+              {durationData.length > 0
+                ? durationData.map((data, ind) => {
+                    console.log(data);
+                    return (
+                      <Chip
+                        key={ind}
+                        label={`${Math.floor(data[0] / 60)}:${(
+                          "0" + Math.floor(data[0] % 60)
+                        ).slice(-2)} - ${Math.floor(data[1] / 60)}:${(
+                          "0" + Math.floor(data[1] % 60)
+                        ).slice(-2)}`}
+                        onDelete={() => deleteChip(ind)}
+                        onClick={() => {
+                          setStartTime(data[0]);
+                          audio.currentTime = data[0];
+                          setEndTime(data[1]);
+                        }}
+                        style={{ margin: "3px 0" }}
+                      />
+                    );
+                  })
+                : "Select some timestamps"}
+            </div>
+            <div
+              style={{
+                flex: 2,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "stretch",
+                textAlign: "center",
+                margin: "0 30px",
+              }}
+            >
+              <Typography id="songName" component="div" variant="h5">
+                {songName}
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                color="text.secondary"
+                component="div"
+              >
+                {artistName}
+              </Typography>
+              <IconButton
+                aria-label="play/pause"
+                onClick={() => {
+                  if (audio.paused) {
+                    audio.play();
+                    setIsPlaying(true);
+                    // setAudio(audio);
+                  } else {
+                    audio.pause();
+                    setIsPlaying(false);
+                    // setAudio(audio);
                   }
-                  valueLabelDisplay="auto"
-                  onChange={(e, value) => {
-                    audio.currentTime = value;
-                    // setStartTime(value);
+                }}
+                style={{ alignSelf: "center" }}
+              >
+                {!isPlaying ? (
+                  <PlayArrowIcon sx={{ height: 38, width: 38 }} />
+                ) : (
+                  <PauseCircle sx={{ height: 38, width: 38 }} />
+                )}
+              </IconButton>
+
+              <Slider
+                value={currentTime}
+                min={0}
+                max={audio.duration}
+                size="small"
+                valueLabelFormat={(value) =>
+                  `0${Math.floor(value / 60)}`.slice(-2) +
+                  ":" +
+                  `0${Math.floor(value % 60)}`.slice(-2)
+                }
+                onChange={(e, value) => {
+                  audio.currentTime = value;
+                  // setStartTime(value);
+                }}
+                onChangeCommitted={(e, value) => {
+                  audio.currentTime = value;
+                  // setStartTime(value);
+                }}
+                valueLabelDisplay="on"
+                style={{ margin: "30px 0" }}
+              />
+              <div style={{ display: "flex", justifyContent: "space-around" }}>
+                <TimeField
+                  value={`${`0${Math.floor(startTime / 60)}`.slice(-2)}:${
+                    Math.floor(startTime) % 60
+                  }`}
+                  onChange={(event, value) => {
+                    const [minutes, seconds] = value.split(":");
+                    setStartTime(parseInt(minutes) * 60 + parseInt(seconds));
+                    audio.currentTime =
+                      parseInt(minutes) * 60 + parseInt(seconds);
                   }}
-                  onChangeCommitted={(e, value) => {
-                    audio.currentTime = value;
-                    // setStartTime(value);
-                  }}
+                  colon=":"
                 />
-              </Stack>
-              <Stack spacing={1} direction="row" alignItems="center">
-                <Stack spacing={1} alignItems="center">
-                  {/* <TextField
-                  id="startTime"
-                  label="Start Time"
-                  type="number"
-                  value={startTime}
-                  onChange={(e) => {
-                    setStartTime(e.target.value);
-                    audio.currentTime = e.target.value;
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    if (durationData.length < 5)
+                      setDurationData(
+                        [...durationData, [startTime, endTime]]
+                        // .filter(
+                        //   function (item, index, inputArray) {
+                        //         for (let i = 0; i < inputArray.length; i++)
+                        //           if (
+                        //             inputArray[i][0] == item[0] &&
+                        //             inputArray[i][1] == item[1] &&
+                        //             index != i
+                        //           )
+                        //             return false;
+                        //         return true;
+                        //   }
+                        // )
+                      );
                   }}
-                  InputLabelProps={{
-                    shrink: true,
+                >
+                  Add
+                </Button>
+                <TimeField
+                  value={
+                    `0${Math.floor(endTime / 60)}`.slice(-2) +
+                    ":" +
+                    `${Math.floor(endTime) % 60}`
+                  }
+                  onChange={(event, value) => {
+                    const [minutes, seconds] = value.split(":");
+                    setEndTime(parseInt(minutes) * 60 + parseInt(seconds));
                   }}
-                  margin="normal"
-                  variant="outlined"
-                  sx={{
-                    width: "50%",
-                    margin: "0 auto",
-                  }}
-                /> */}
-                  <TimeField
-                    value={
-                      ("0" + `${Math.floor(startTime / 60)}`).slice(-2) +
-                      ":" +
-                      `${Math.floor(startTime) % 60}`
-                    }
-                    onChange={(event, value) => {
-                      const [minutes, seconds] = value.split(":");
-                      setStartTime(parseInt(minutes) * 60 + parseInt(seconds));
-                      audio.currentTime =
-                        parseInt(minutes) * 60 + parseInt(seconds);
-                    }}
-                    colon=":"
-                  />{" "}
-                </Stack>
-                <Stack spacing={1} alignItems="center">
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                      alert("yo");
-                    }}
-                  >
-                    Add
-                  </Button>
-                </Stack>
-                <Stack spacing={2} alignItems="center">
-                  {/* <TextField
-                  id="endTime"
-                  label="End Time"
-                  type="number"
-                  value={Math.floor(endTime)}
-                  onChange={(e) => {
-                    setEndTime(e.target.value);
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  margin="normal"
-                  variant="outlined"
-                  sx={{
-                    width: "50%",
-                    margin: "0 auto",
-                  }}
-                /> */}
-                  <TimeField
-                    value={
-                      ("0" + `${Math.floor(endTime / 60)}`).slice(-2) +
-                      ":" +
-                      `${Math.floor(endTime) % 60}`
-                    }
-                    onChange={(event, value) => {
-                      const [minutes, seconds] = value.split(":");
-                      setEndTime(parseInt(minutes) * 60 + parseInt(seconds));
-                    }}
-                    colon=":"
-                  />
-                </Stack>
-              </Stack>
-            </Stack>
-          </Box>
-          <CardMedia
-            component="img"
-            sx={{
-              width: 151,
-              position: "absolute",
-              right: "31%",
-            }}
-            image={albumArt}
-            alt={songName + " by " + artistName}
-          />
+                  colon=":"
+                />
+              </div>
+            </div>
+            <div style={{ flex: 1 }}>
+              <img
+                src={albumArt}
+                alt={songName + " by " + artistName}
+                style={{ width: "100%" }}
+              />
+            </div>
+          </div>
         </Card>
       )}
     </div>
