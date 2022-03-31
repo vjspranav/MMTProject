@@ -45,6 +45,7 @@ function App() {
         artistName={songs[page - 2].artistName}
         filePath={songs[page - 2].filePath}
         albumArt={songs[page - 2].albumArt}
+        page={page}
       />
     );
   };

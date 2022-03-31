@@ -14,6 +14,7 @@ import { PauseCircle, ReplayCircleFilledOutlined } from "@mui/icons-material";
 import TimeField from "react-simple-timefield";
 
 export default function MyPlayer(props) {
+  const page = props.page;
   const songName = props.songName;
   const artistName = props.artistName;
   const filePath = props.filePath;
@@ -26,8 +27,30 @@ export default function MyPlayer(props) {
   const [endTime, setEndTime] = React.useState(0);
   const [currentTime, setCurrentTime] = React.useState(0);
   const [durationData, setDurationData] = React.useState([]);
+  React.useEffect(() => {
+    audio.pause();
+    audio.currentTime = 0;
+    setAudio(new Audio(filePath));
+    setLoading(true);
+    setIsPlaying(false);
+    audio.oncanplaythrough = () => {
+      setLoading(false);
+      setEndTime(audio.duration);
+    };
 
-  audio.oncanplay = () => {
+    let temp = JSON.parse(localStorage.getItem("mmt-research"));
+    // If temp has songName, then add a field
+    if (songName in temp.data) {
+      setDurationData(temp.data[songName].duration);
+    } else {
+      setDurationData([]);
+      temp.data[songName] = {};
+      temp.data[songName].duration = durationData;
+      localStorage.setItem("mmt-research", JSON.stringify(temp));
+    }
+  }, [page]);
+
+  audio.oncanplaythrough = () => {
     setLoading(false);
     setEndTime(audio.duration);
   };
@@ -45,6 +68,9 @@ export default function MyPlayer(props) {
 
   const deleteChip = (id) => {
     setDurationData(durationData.filter((_, ind) => ind !== id));
+    let temp = JSON.parse(localStorage.getItem("mmt-research"));
+    temp.data[songName].duration = durationData.filter((_, ind) => ind !== id);
+    localStorage.setItem("mmt-research", JSON.stringify(temp));
   };
 
   return (
@@ -235,6 +261,17 @@ export default function MyPlayer(props) {
                             //         return true;
                             //   }
                             // )
+                          );
+                          let temp = JSON.parse(
+                            localStorage.getItem("mmt-research")
+                          );
+                          temp.data[songName].duration = [
+                            ...durationData,
+                            [startTime, endTime],
+                          ];
+                          localStorage.setItem(
+                            "mmt-research",
+                            JSON.stringify(temp)
                           );
                         }
                       }

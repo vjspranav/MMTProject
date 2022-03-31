@@ -1,3 +1,4 @@
+import React from "react";
 import Card from "@mui/material/Card";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -12,9 +13,19 @@ export default function MyFormPage({
   artistName,
   filePath,
   albumArt,
+  page,
 }) {
-  console.log(qData);
-
+  const [answers, setAnswers] = React.useState({});
+  React.useEffect(() => {
+    let temp = JSON.parse(localStorage.getItem("mmt-research"));
+    // If temp has songName, then add a field
+    if (songName in temp.data) {
+      setAnswers(temp.data[songName]);
+    } else {
+      temp.data[songName] = answers;
+      localStorage.setItem("mmt-research", JSON.stringify(temp));
+    }
+  }, [page]);
   return (
     <div>
       <div>
@@ -23,6 +34,7 @@ export default function MyFormPage({
           artistName={artistName}
           filePath={filePath}
           albumArt={albumArt}
+          page={page}
         />
       </div>
       <Card
