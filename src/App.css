@@ -3,3 +3,7 @@
   margin: 10px 0px !important;
   overflow: hidden;
 }
+
+.MuiMobileStepper-progress {
+  width: 95% !important;
+}

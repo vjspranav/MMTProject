@@ -7,6 +7,7 @@ import StartPage from "./pages/StartPage";
 import InstructionsPage from "./pages/InstructionsPage";
 import EndPage from "./pages/EndPage";
 import { songs } from "./songsData";
+import Stepper from "./components/Stepper";
 
 function App() {
   const [page, setPage] = useState(0);
@@ -28,86 +29,104 @@ function App() {
   };
 
   return (
-    <div
-      className="App"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      {calculatePage()}
+    <div className="App">
       <div
         style={{
-          width: "50%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "10vh",
+          overflow: "auto",
+          flexDirection: "column",
+          position: "relative",
         }}
       >
-        {page !== 0 ? (
-          <Button
-            sx={{
-              position: "relative",
-              display: "inline-block",
-              margin: "10px auto auto",
-              float: "left",
-              // disable if page==1
-              opacity: page === 1 ? 0.5 : 1,
+        <Stepper page={page} songsLength={songs.length} />
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {calculatePage()}
+        <div
+          style={{
+            width: "50%",
+          }}
+        >
+          {page !== 0 ? (
+            <Button
+              sx={{
+                position: "relative",
+                display: "inline-block",
+                margin: "10px auto auto",
+                float: "left",
+                // disable if page==1
+                opacity: page === 1 ? 0.5 : 1,
 
-              "&:hover": {
-                backgroundColor: page === 1 ? "transparent" : "#48bfe3",
+                "&:hover": {
+                  backgroundColor: page === 1 ? "transparent" : "#48bfe3",
+                  color: page === 1 ? "gray" : "white",
+                  cursor: page === 1 ? "not-allowed" : "pointer",
+                },
+                backgroundColor: page === 1 ? "transparent" : "#56cfe1",
                 color: page === 1 ? "gray" : "white",
-                cursor: page === 1 ? "not-allowed" : "pointer",
-              },
-              backgroundColor: page === 1 ? "transparent" : "#56cfe1",
-              color: page === 1 ? "gray" : "white",
-            }}
-            {...(page === 1 ? "disabled" : "enabled")}
-            onClick={() => {
-              if (page !== 1) setPage(page === 0 ? 0 : page - 1);
-            }}
-          >
-            Prev
-          </Button>
-        ) : (
-          ""
-        )}
-        {page < songs.length + 2 ? (
-          <Button
-            sx={{
-              position: "relative",
-              display: page === 0 ? "none" : "inline-block",
-              margin: "10px auto auto",
-              float: "right",
-              "&:hover": {
-                backgroundColor: "#48bfe3",
+              }}
+              {...(page === 1 ? "disabled" : "enabled")}
+              onClick={() => {
+                if (page !== 1) setPage(page === 0 ? 0 : page - 1);
+              }}
+            >
+              Prev
+            </Button>
+          ) : (
+            ""
+          )}
+          {page < songs.length + 2 ? (
+            <Button
+              sx={{
+                position: "relative",
+                display: page === 0 ? "none" : "inline-block",
+                margin: "10px auto auto",
+                float: "right",
+                "&:hover": {
+                  backgroundColor: "#48bfe3",
+                  color: "white",
+                },
+                backgroundColor: "#56cfe1",
                 color: "white",
-              },
-              backgroundColor: "#56cfe1",
-              color: "white",
-            }}
-            onClick={() => setPage(page === songs.length + 2 ? page : page + 1)}
-          >
-            Next
-          </Button>
-        ) : (
-          <Button
-            sx={{
-              position: "relative",
-              display: "inline-block",
-              margin: "10px auto auto",
-              float: "right",
-              "&:hover": {
-                backgroundColor: "#48bfe3",
+              }}
+              onClick={() =>
+                setPage(page === songs.length + 2 ? page : page + 1)
+              }
+            >
+              Next
+            </Button>
+          ) : (
+            <Button
+              sx={{
+                position: "relative",
+                display: "inline-block",
+                margin: "10px auto auto",
+                float: "right",
+                "&:hover": {
+                  backgroundColor: "#48bfe3",
+                  color: "white",
+                },
+                backgroundColor: "#56cfe1",
                 color: "white",
-              },
-              backgroundColor: "#56cfe1",
-              color: "white",
-            }}
-            onClick={() => setPage(page === songs.length + 1 ? page : page + 1)}
-          >
-            Submit
-          </Button>
-        )}
+              }}
+              onClick={() =>
+                setPage(page === songs.length + 1 ? page : page + 1)
+              }
+            >
+              Submit
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );
