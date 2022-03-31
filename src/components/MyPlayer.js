@@ -82,7 +82,14 @@ export default function MyPlayer(props) {
   return (
     <div>
       {loading ? (
-        <CircularProgress />
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <CircularProgress
+            sx={{
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          />
+        </div>
       ) : (
         <Card
           sx={{

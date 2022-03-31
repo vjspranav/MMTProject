@@ -88,7 +88,7 @@ const songs = [
     artistName: "Billie Eilish",
     filePath:
       "https://vjsbuilds.stag-os.org/mmt/audio/song/lovely__with_Khalid_.mp3",
-    albumArt: "https://vjsbuilds.stag-os.org/mmt/audio/albumArt/loveley.jpg",
+    albumArt: "https://vjsbuilds.stag-os.org/mmt/audio/albumArt/lovely.jpg",
   },
 ];
 
