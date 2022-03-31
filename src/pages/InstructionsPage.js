@@ -38,12 +38,21 @@ const InstructionsPage = (props) => {
 
         <p
           style={{
-            color: "rgb(145,163,176)",
-            padding: "15px 0",
+            color: "rgb(160,163,176)",
+            padding: "0 0",
           }}
         >
           Go through the steps below to get started.
         </p>
+        <h3
+          style={{
+            color: "rgb(145,163,176)",
+            marginTop: "5px",
+          }}
+        >
+          Earworms: a catchy song or tune that runs continually through a
+          person's mind.
+        </h3>
 
         <div
           style={{
@@ -54,21 +63,22 @@ const InstructionsPage = (props) => {
           }}
         >
           <Alert severity="success" sx={{ margin: "10px 0" }}>
-            On the next page, a passage based on a topic will be loaded.
+            The Next 10 pages will have 10 songs and a few questions.
           </Alert>
           <Alert severity="success" sx={{ margin: "10px 0" }}>
-            You have to go through the content of this passage.
+            You have to listen to the songs and slect at-most 5 clips from song
+            which you believe make these songs an earworm.
           </Alert>
           <Alert severity="success" sx={{ margin: "10px 0" }}>
-            Then, you will move to the questionnaire section, where you will be
-            asked a few questions about your experience.
+            You can enter start time, end time and click on Add button,
+            Alternatively clicking set will set the current time as start/end
+            time.
           </Alert>
           <Alert severity="success" sx={{ margin: "10px 0" }}>
-            These questions will not involve any technical knowledge.
+            Then answer the questions for each song.
           </Alert>
           <Alert severity="success" sx={{ margin: "10px 0" }}>
-            Your answers will help us to improve the content. You are free to
-            leave the survey at any time.
+            At the end there will be a short questionaire to get your feedback.
           </Alert>
         </div>
       </div>

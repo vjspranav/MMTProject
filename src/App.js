@@ -1,6 +1,6 @@
 import "./App.css";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import MyFormPage from "./components/MyFormPage";
 import StartPage from "./pages/StartPage";
@@ -11,9 +11,30 @@ import Stepper from "./components/Stepper";
 
 function App() {
   const [page, setPage] = useState(0);
+  useEffect(() => {
+    let temp = localStorage.getItem("mmt-research");
+    console.log(temp);
+    if (temp) {
+      temp = JSON.parse(temp);
+      setPage(temp.page);
+    } else {
+      localStorage.setItem(
+        "mmt-research",
+        JSON.stringify({ page: page, data: {} })
+      );
+    }
+  }, []);
+
+  const updatePage = (pgNum) => {
+    setPage(pgNum);
+    let temp = JSON.parse(localStorage.getItem("mmt-research"));
+    temp.page = pgNum;
+    localStorage.setItem("mmt-research", JSON.stringify(temp));
+  };
+
   const calculatePage = () => {
     return page === 0 ? (
-      <StartPage setPage={setPage} />
+      <StartPage updatePage={updatePage} />
     ) : page === 1 ? (
       <InstructionsPage />
     ) : page === songs.length + 2 ? (
@@ -77,7 +98,7 @@ function App() {
               }}
               {...(page === 1 ? "disabled" : "enabled")}
               onClick={() => {
-                if (page !== 1) setPage(page === 0 ? 0 : page - 1);
+                if (page !== 1) updatePage(page === 0 ? 0 : page - 1);
               }}
             >
               Prev
@@ -100,7 +121,7 @@ function App() {
                 color: "white",
               }}
               onClick={() =>
-                setPage(page === songs.length + 2 ? page : page + 1)
+                updatePage(page === songs.length + 2 ? page : page + 1)
               }
             >
               Next
@@ -120,7 +141,7 @@ function App() {
                 color: "white",
               }}
               onClick={() =>
-                setPage(page === songs.length + 1 ? page : page + 1)
+                updatePage(page === songs.length + 1 ? page : page + 1)
               }
             >
               Submit

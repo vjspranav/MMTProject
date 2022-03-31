@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const StartPage = (props) => {
-  const setPage = props.setPage;
+  const updatePage = props.updatePage;
 
   const [profession, setProfession] = useState();
   const [age, setAge] = useState();
@@ -20,7 +20,7 @@ const StartPage = (props) => {
 
   const moveNext = () => {
     setLoading(true);
-    setPage(1);
+    updatePage(1);
   };
 
   return (
