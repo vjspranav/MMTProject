@@ -20,9 +20,16 @@ export default function MyFormPage({
     let temp = JSON.parse(localStorage.getItem("mmt-research"));
     // If temp has songName, then add a field
     if (songName in temp.data) {
-      setAnswers(temp.data[songName]);
+      if ("answers" in temp.data[songName]) {
+        setAnswers(temp.data[songName].answers);
+      } else {
+        setAnswers({});
+        temp.data[songName].answers = answers;
+        localStorage.setItem("mmt-research", JSON.stringify(temp));
+      }
     } else {
-      temp.data[songName] = answers;
+      setAnswers({});
+      temp.data[songName].answers = answers;
       localStorage.setItem("mmt-research", JSON.stringify(temp));
     }
   }, [page]);
@@ -73,7 +80,40 @@ export default function MyFormPage({
               <FormLabel id={`q${q.qid}`}>{q.question}</FormLabel>
               <RadioGroup aria-label={`q${q.qid}`} name={`q${q.qid}`} row>
                 {q.answers.map((a) => (
-                  <FormControlLabel value={a} control={<Radio />} label={a} />
+                  <FormControlLabel
+                    value={a}
+                    checked={
+                      JSON.parse(localStorage.getItem("mmt-research")).data[
+                        songName
+                      ]
+                        ? JSON.parse(localStorage.getItem("mmt-research")).data[
+                            songName
+                          ].answers
+                          ? JSON.parse(localStorage.getItem("mmt-research"))
+                              .data[songName].answers[q.qid]
+                            ? JSON.parse(localStorage.getItem("mmt-research"))
+                                .data[songName].answers[q.qid] === a
+                            : false
+                          : false
+                        : false
+                    }
+                    onChange={(e) => {
+                      setAnswers({ ...answers, [q.qid]: e.target.value });
+                      let temp = JSON.parse(
+                        localStorage.getItem("mmt-research")
+                      );
+                      temp.data[songName].answers = {
+                        ...answers,
+                        [q.qid]: e.target.value,
+                      };
+                      localStorage.setItem(
+                        "mmt-research",
+                        JSON.stringify(temp)
+                      );
+                    }}
+                    control={<Radio />}
+                    label={a}
+                  />
                 ))}
               </RadioGroup>
             </FormControl>

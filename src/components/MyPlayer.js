@@ -41,7 +41,13 @@ export default function MyPlayer(props) {
     let temp = JSON.parse(localStorage.getItem("mmt-research"));
     // If temp has songName, then add a field
     if (songName in temp.data) {
-      setDurationData(temp.data[songName].duration);
+      if ("duration" in temp.data[songName]) {
+        setDurationData(temp.data[songName].duration);
+      } else {
+        setDurationData([]);
+        temp.data[songName].duration = durationData;
+        localStorage.setItem("mmt-research", JSON.stringify(temp));
+      }
     } else {
       setDurationData([]);
       temp.data[songName] = {};

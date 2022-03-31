@@ -7,7 +7,7 @@ export const qData = [
   {
     question:
       "Rate the song on 1-5 how much of an earworm do you think the song is?",
-    answers: [1, 2, 3, 4, 5],
+    answers: ["1", "2", "3", "4", "5"],
     qid: 2,
   },
   {
