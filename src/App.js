@@ -20,14 +20,20 @@ const useStyles = makeStyles({
 function App() {
   const [page, setPage] = useState(0);
   const styles = useStyles();
-  const calculatePage =
-    page === 0 ? (
+  const calculatePage = () => {
+    return page === 0 ? (
       <StartPage />
-    ) : page === songs.length ? (
+    ) : page === songs.length + 1 ? (
       <EndPage />
     ) : (
-      <MyFormPage songs={songs} />
+      <MyFormPage
+        songName={songs[page - 1].songName}
+        artistName={songs[page - 1].artistName}
+        filePath={songs[page - 1].filePath}
+        albumArt={songs[page - 1].albumArt}
+      />
     );
+  };
 
   return (
     <div
@@ -39,7 +45,7 @@ function App() {
         alignItems: "center",
       }}
     >
-      {page === 0 ? (
+      {/* {page === 0 ? (
         <StartPage />
       ) : (
         <div
@@ -54,7 +60,8 @@ function App() {
             albumArt={songs[page - 1].albumArt}
           />
         </div>
-      )}
+      )} */}
+      {calculatePage()}
       <div
         style={{
           width: "50%",
@@ -74,7 +81,7 @@ function App() {
         >
           Prev
         </Button>
-        {page < songs.length ? (
+        {page < songs.length + 1 ? (
           <Button
             className={styles.button}
             style={{
@@ -83,7 +90,7 @@ function App() {
               margin: "10px auto auto",
               float: "right",
             }}
-            onClick={() => setPage(page === songs.length ? page : page + 1)}
+            onClick={() => setPage(page === songs.length + 1 ? page : page + 1)}
           >
             Next
           </Button>
