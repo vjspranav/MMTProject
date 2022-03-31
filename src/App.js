@@ -1,3 +1,5 @@
+import "./App.css";
+
 import { useState } from "react";
 import { Button } from "@mui/material";
 import MyFormPage from "./components/MyFormPage";
@@ -10,7 +12,7 @@ function App() {
   const [page, setPage] = useState(0);
   const calculatePage = () => {
     return page === 0 ? (
-      <StartPage />
+      <StartPage setPage={setPage} />
     ) : page === 1 ? (
       <InstructionsPage />
     ) : page === songs.length + 2 ? (
@@ -73,7 +75,7 @@ function App() {
           <Button
             sx={{
               position: "relative",
-              display: "inline-block",
+              display: page === 0 ? "none" : "inline-block",
               margin: "10px auto auto",
               float: "right",
               "&:hover": {

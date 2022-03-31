@@ -27,7 +27,7 @@ const InstructionsPage = (props) => {
       >
         <p
           style={{
-            color: "#3BAF9F",
+            color: "#56cfe1",
             fontSize: "3rem",
             margin: "10px 0",
             fontWeight: "bold",

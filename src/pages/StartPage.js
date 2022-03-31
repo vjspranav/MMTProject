@@ -11,6 +11,8 @@ import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const StartPage = (props) => {
+  const setPage = props.setPage;
+
   const [profession, setProfession] = useState();
   const [age, setAge] = useState();
   const [gender, setGender] = useState(-1);
@@ -18,6 +20,7 @@ const StartPage = (props) => {
 
   const moveNext = () => {
     setLoading(true);
+    setPage(1);
   };
 
   return (
@@ -35,7 +38,7 @@ const StartPage = (props) => {
       <div
         style={{
           flex: 2,
-          background: "#3BAF9F",
+          background: "#56cfe1",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -60,11 +63,11 @@ const StartPage = (props) => {
           }}
         >
           <AccessTimeFilledIcon style={{ marginRight: "5px" }} />
-          15 - 20 minutes
+          30-40 minutes
         </p>
         <p>
-          This survey will help us to gather data about your user experience. We
-          will not share your information with anyone.
+          This survey will help us to analyze your music preferences. We will
+          not share your information with anyone.
         </p>
       </div>
       <div
@@ -96,7 +99,7 @@ const StartPage = (props) => {
         )}
         <p
           style={{
-            color: "#3BAF9F",
+            color: "#56cfe1",
             fontSize: "3rem",
             margin: "10px 0",
             fontWeight: "bold",
