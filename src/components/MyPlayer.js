@@ -3,10 +3,15 @@ import Card from "@mui/material/Card";
 import { Button, IconButton } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import { PauseCircle } from "@mui/icons-material";
+import {
+  PauseCircle,
+  Replay,
+  ReplayCircleFilledOutlined,
+} from "@mui/icons-material";
 import Slider from "@mui/material/Slider";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Chip } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 import TimeField from "react-simple-timefield";
 
@@ -40,10 +45,22 @@ export default function MyPlayer(props) {
     }
   };
 
+  const useStyles = makeStyles({
+    button: {
+      backgroundColor: "#56cfe1",
+      color: "white",
+      "&:hover": {
+        backgroundColor: "#48bfe3",
+        color: "white",
+      },
+    },
+  });
+
   const deleteChip = (id) => {
     setDurationData(durationData.filter((_, ind) => ind !== id));
   };
 
+  const classes = useStyles();
   return (
     // Center the player in the page
     // Vertically center the player in the page
@@ -168,57 +185,124 @@ export default function MyPlayer(props) {
                   // setStartTime(value);
                 }}
                 valueLabelDisplay="on"
-                style={{ margin: "30px 0" }}
+                style={{ margin: "30px 0", color: "#48bfe3" }}
               />
               <div style={{ display: "flex", justifyContent: "space-around" }}>
-                <TimeField
-                  value={`${`0${Math.floor(startTime / 60)}`.slice(-2)}:${
-                    Math.floor(startTime) % 60
-                  }`}
-                  onChange={(event, value) => {
-                    const [minutes, seconds] = value.split(":");
-                    setStartTime(parseInt(minutes) * 60 + parseInt(seconds));
-                    audio.currentTime =
-                      parseInt(minutes) * 60 + parseInt(seconds);
-                  }}
-                  colon=":"
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => {
-                    if (durationData.length < 5)
-                      setDurationData(
-                        [...durationData, [startTime, endTime]]
-                        // .filter(
-                        //   function (item, index, inputArray) {
-                        //         for (let i = 0; i < inputArray.length; i++)
-                        //           if (
-                        //             inputArray[i][0] == item[0] &&
-                        //             inputArray[i][1] == item[1] &&
-                        //             index != i
-                        //           )
-                        //             return false;
-                        //         return true;
-                        //   }
-                        // )
-                      );
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
                   }}
                 >
-                  Add
-                </Button>
-                <TimeField
-                  value={
-                    `0${Math.floor(endTime / 60)}`.slice(-2) +
-                    ":" +
-                    `${Math.floor(endTime) % 60}`
-                  }
-                  onChange={(event, value) => {
-                    const [minutes, seconds] = value.split(":");
-                    setEndTime(parseInt(minutes) * 60 + parseInt(seconds));
+                  <Button
+                    className={classes.button}
+                    sx={{
+                      minWidth: 0,
+                      borderRadius: "15px",
+                      height: "20px",
+                    }}
+                    onClick={() => {
+                      setStartTime(audio.currentTime);
+                    }}
+                  >
+                    Set
+                  </Button>
+                  <TimeField
+                    value={`${`0${Math.floor(startTime / 60)}`.slice(-2)}:${
+                      Math.floor(startTime) % 60
+                    }`}
+                    onChange={(event, value) => {
+                      const [minutes, seconds] = value.split(":");
+                      setStartTime(parseInt(minutes) * 60 + parseInt(seconds));
+                      audio.currentTime =
+                        parseInt(minutes) * 60 + parseInt(seconds);
+                    }}
+                    colon=":"
+                  />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
                   }}
-                  colon=":"
-                />
+                >
+                  <Button
+                    className={classes.button}
+                    onClick={() => {
+                      if (durationData.length < 5) {
+                        // If endTime - startTime is greater than 30 seconds don't allow it
+                        if (endTime - startTime > 30) {
+                          alert(
+                            "Please select a duration less than 30 seconds"
+                          );
+                        } else {
+                          setDurationData(
+                            [...durationData, [startTime, endTime]]
+                            // .filter(
+                            //   function (item, index, inputArray) {
+                            //         for (let i = 0; i < inputArray.length; i++)
+                            //           if (
+                            //             inputArray[i][0] == item[0] &&
+                            //             inputArray[i][1] == item[1] &&
+                            //             index != i
+                            //           )
+                            //             return false;
+                            //         return true;
+                            //   }
+                            // )
+                          );
+                        }
+                      }
+                    }}
+                  >
+                    Add
+                  </Button>
+                  <IconButton
+                    aria-label="reset"
+                    onClick={() => {
+                      setStartTime(0);
+                      audio.currentTime = 0;
+                      setEndTime(audio.duration);
+                    }}
+                  >
+                    <ReplayCircleFilledOutlined />
+                  </IconButton>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Button
+                    className={classes.button}
+                    sx={{
+                      minWidth: 0,
+                      borderRadius: "15px",
+                      height: "20px",
+                    }}
+                    onClick={() => {
+                      setEndTime(audio.currentTime);
+                    }}
+                  >
+                    Set
+                  </Button>
+                  <TimeField
+                    value={
+                      `0${Math.floor(endTime / 60)}`.slice(-2) +
+                      ":" +
+                      `${Math.floor(endTime) % 60}`
+                    }
+                    onChange={(event, value) => {
+                      const [minutes, seconds] = value.split(":");
+                      setEndTime(parseInt(minutes) * 60 + parseInt(seconds));
+                    }}
+                    colon=":"
+                  />
+                </div>
               </div>
             </div>
             <div style={{ flex: 1 }}>
