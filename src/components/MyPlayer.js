@@ -1,17 +1,15 @@
 import * as React from "react";
-import Card from "@mui/material/Card";
-import { Button, IconButton } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import {
-  PauseCircle,
-  Replay,
-  ReplayCircleFilledOutlined,
-} from "@mui/icons-material";
-import Slider from "@mui/material/Slider";
-import CircularProgress from "@mui/material/CircularProgress";
-import { Chip } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+  Button,
+  Card,
+  IconButton,
+  Chip,
+  Slider,
+  CircularProgress,
+  Typography,
+} from "@mui/material";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import { PauseCircle, ReplayCircleFilledOutlined } from "@mui/icons-material";
 
 import TimeField from "react-simple-timefield";
 
@@ -45,41 +43,15 @@ export default function MyPlayer(props) {
     }
   };
 
-  const useStyles = makeStyles({
-    button: {
-      backgroundColor: "#56cfe1",
-      color: "white",
-      "&:hover": {
-        backgroundColor: "#48bfe3",
-        color: "white",
-      },
-    },
-  });
-
   const deleteChip = (id) => {
     setDurationData(durationData.filter((_, ind) => ind !== id));
   };
 
-  const classes = useStyles();
   return (
-    // Center the player in the page
-    // Vertically center the player in the page
     <div>
       {loading ? (
-        // <Card
-        //   sx={{
-        //     display: "flex",
-        //     justifyContent: "center",
-        //     alignItems: "center",
-        //     margin: "20%",
-        //     width: "50%",
-        //     height: "200px",
-        //     backgroundColor: "rgba(0, 0, 0, 0.5)",
-        //   }}
-        // >
         <CircularProgress />
       ) : (
-        // {/* </Card> */}
         <Card
           sx={{
             display: "flex",
@@ -196,11 +168,16 @@ export default function MyPlayer(props) {
                   }}
                 >
                   <Button
-                    className={classes.button}
                     sx={{
                       minWidth: 0,
                       borderRadius: "15px",
                       height: "20px",
+                      "&:hover": {
+                        backgroundColor: "#48bfe3",
+                        color: "white",
+                      },
+                      backgroundColor: "#56cfe1",
+                      color: "white",
                     }}
                     onClick={() => {
                       setStartTime(audio.currentTime);
@@ -229,10 +206,16 @@ export default function MyPlayer(props) {
                   }}
                 >
                   <Button
-                    className={classes.button}
+                    sx={{
+                      "&:hover": {
+                        backgroundColor: "#48bfe3",
+                        color: "white",
+                      },
+                      backgroundColor: "#56cfe1",
+                      color: "white",
+                    }}
                     onClick={() => {
                       if (durationData.length < 5) {
-                        // If endTime - startTime is greater than 30 seconds don't allow it
                         if (endTime - startTime > 30) {
                           alert(
                             "Please select a duration less than 30 seconds"
@@ -278,11 +261,16 @@ export default function MyPlayer(props) {
                   }}
                 >
                   <Button
-                    className={classes.button}
                     sx={{
                       minWidth: 0,
                       borderRadius: "15px",
                       height: "20px",
+                      "&:hover": {
+                        backgroundColor: "#48bfe3",
+                        color: "white",
+                      },
+                      backgroundColor: "#56cfe1",
+                      color: "white",
                     }}
                     onClick={() => {
                       setEndTime(audio.currentTime);

@@ -2,35 +2,25 @@ import { useState } from "react";
 import { Button } from "@mui/material";
 import MyFormPage from "./components/MyFormPage";
 import StartPage from "./pages/StartPage";
+import InstructionsPage from "./pages/InstructionsPage";
 import EndPage from "./pages/EndPage";
 import { songs } from "./songsData";
-import { makeStyles } from "@mui/styles";
-
-const useStyles = makeStyles({
-  button: {
-    backgroundColor: "#56cfe1",
-    color: "white",
-    "&:hover": {
-      backgroundColor: "#48bfe3",
-      color: "white",
-    },
-  },
-});
 
 function App() {
   const [page, setPage] = useState(0);
-  const styles = useStyles();
   const calculatePage = () => {
     return page === 0 ? (
       <StartPage />
-    ) : page === songs.length + 1 ? (
+    ) : page === 1 ? (
+      <InstructionsPage />
+    ) : page === songs.length + 2 ? (
       <EndPage />
     ) : (
       <MyFormPage
-        songName={songs[page - 1].songName}
-        artistName={songs[page - 1].artistName}
-        filePath={songs[page - 1].filePath}
-        albumArt={songs[page - 1].albumArt}
+        songName={songs[page - 2].songName}
+        artistName={songs[page - 2].artistName}
+        filePath={songs[page - 2].filePath}
+        albumArt={songs[page - 2].albumArt}
       />
     );
   };
@@ -45,65 +35,73 @@ function App() {
         alignItems: "center",
       }}
     >
-      {/* {page === 0 ? (
-        <StartPage />
-      ) : (
-        <div
-          style={{
-            display: "inline-flex",
-          }}
-        >
-          <MyFormPage
-            songName={songs[page - 1].songName}
-            artistName={songs[page - 1].artistName}
-            filePath={songs[page - 1].filePath}
-            albumArt={songs[page - 1].albumArt}
-          />
-        </div>
-      )} */}
       {calculatePage()}
       <div
         style={{
           width: "50%",
         }}
       >
-        {/* Add Next button position to right of div */}
-        {/* Add back button position to left of div */}
-        <Button
-          className={styles.button}
-          style={{
-            position: "relative",
-            display: "inline-block",
-            margin: "10px auto auto",
-            float: "left",
-          }}
-          onClick={() => setPage(page === 0 ? 0 : page - 1)}
-        >
-          Prev
-        </Button>
-        {page < songs.length + 1 ? (
+        {page !== 0 ? (
           <Button
-            className={styles.button}
-            style={{
+            sx={{
+              position: "relative",
+              display: "inline-block",
+              margin: "10px auto auto",
+              float: "left",
+              // disable if page==1
+              opacity: page === 1 ? 0.5 : 1,
+
+              "&:hover": {
+                backgroundColor: page === 1 ? "transparent" : "#48bfe3",
+                color: page === 1 ? "gray" : "white",
+                cursor: page === 1 ? "not-allowed" : "pointer",
+              },
+              backgroundColor: page === 1 ? "transparent" : "#56cfe1",
+              color: page === 1 ? "gray" : "white",
+            }}
+            {...(page === 1 ? "disabled" : "enabled")}
+            onClick={() => {
+              if (page !== 1) setPage(page === 0 ? 0 : page - 1);
+            }}
+          >
+            Prev
+          </Button>
+        ) : (
+          ""
+        )}
+        {page < songs.length + 2 ? (
+          <Button
+            sx={{
               position: "relative",
               display: "inline-block",
               margin: "10px auto auto",
               float: "right",
+              "&:hover": {
+                backgroundColor: "#48bfe3",
+                color: "white",
+              },
+              backgroundColor: "#56cfe1",
+              color: "white",
             }}
-            onClick={() => setPage(page === songs.length + 1 ? page : page + 1)}
+            onClick={() => setPage(page === songs.length + 2 ? page : page + 1)}
           >
             Next
           </Button>
         ) : (
           <Button
-            className={styles.button}
-            style={{
+            sx={{
               position: "relative",
               display: "inline-block",
               margin: "10px auto auto",
               float: "right",
+              "&:hover": {
+                backgroundColor: "#48bfe3",
+                color: "white",
+              },
+              backgroundColor: "#56cfe1",
+              color: "white",
             }}
-            onClick={() => setPage(page === songs.length ? page : page + 1)}
+            onClick={() => setPage(page === songs.length + 1 ? page : page + 1)}
           >
             Submit
           </Button>
