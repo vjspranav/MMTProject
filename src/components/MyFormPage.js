@@ -15,7 +15,7 @@ export default function MyFormPage({
   albumArt,
   page,
 }) {
-  const [answers, setAnswers] = React.useState({});
+  const [answers, setAnswers] = React.useState({ qtheory: "" });
   React.useEffect(() => {
     let temp = JSON.parse(localStorage.getItem("mmt-research"));
     // If temp has songName, then add a field
@@ -23,12 +23,12 @@ export default function MyFormPage({
       if ("answers" in temp.data[songName]) {
         setAnswers(temp.data[songName].answers);
       } else {
-        setAnswers({});
+        setAnswers({ qtheory: "" });
         temp.data[songName].answers = answers;
         localStorage.setItem("mmt-research", JSON.stringify(temp));
       }
     } else {
-      setAnswers({});
+      setAnswers({ qtheory: "" });
       temp.data[songName].answers = answers;
       localStorage.setItem("mmt-research", JSON.stringify(temp));
     }
@@ -83,17 +83,9 @@ export default function MyFormPage({
                   <FormControlLabel
                     value={a}
                     checked={
-                      JSON.parse(localStorage.getItem("mmt-research")).data[
-                        songName
-                      ]
-                        ? JSON.parse(localStorage.getItem("mmt-research")).data[
-                            songName
-                          ].answers
-                          ? JSON.parse(localStorage.getItem("mmt-research"))
-                              .data[songName].answers[q.qid]
-                            ? JSON.parse(localStorage.getItem("mmt-research"))
-                                .data[songName].answers[q.qid] === a
-                            : false
+                      answers
+                        ? answers[q.qid]
+                          ? answers[q.qid] === a
                           : false
                         : false
                     }
@@ -118,6 +110,40 @@ export default function MyFormPage({
               </RadioGroup>
             </FormControl>
           ))}
+          {/*  Add a Form Control for Question Answer */}
+          <FormControl
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              margin: "10px 0",
+              width: "100%",
+            }}
+          >
+            <FormLabel id="qtheory">
+              Why do you think this song is a earworm
+            </FormLabel>
+            <input
+              type="text"
+              value={answers.qtheory}
+              onChange={(e) => {
+                setAnswers({ ...answers, qtheory: e.target.value });
+                let temp = JSON.parse(localStorage.getItem("mmt-research"));
+                temp.data[songName].answers = {
+                  ...answers,
+                  qtheory: e.target.value,
+                };
+                localStorage.setItem("mmt-research", JSON.stringify(temp));
+              }}
+              placeholder="Answer"
+              style={{
+                width: "100%",
+                margin: "10px 0",
+                padding: "10px",
+                borderRadius: "5px",
+                border: "1px solid #56cfe1",
+              }}
+            />
+          </FormControl>
         </div>
       </Card>
     </div>
