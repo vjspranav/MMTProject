@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import MobileStepper from "@mui/material/MobileStepper";
 
 const Stepper = (props) => {
-  const steps = props.songsLength + 3;
+  const steps = props.songsLength + 4;
   const page = props.page;
   const [activeStep, setActiveStep] = useState(0);
   useEffect(() => {

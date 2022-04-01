@@ -8,6 +8,7 @@ import InstructionsPage from "./pages/InstructionsPage";
 import EndPage from "./pages/EndPage";
 import { songs } from "./songsData";
 import Stepper from "./components/Stepper";
+import ThankYouPage from "./pages/ThankYouPage";
 
 function App() {
   const [page, setPage] = useState(0);
@@ -38,7 +39,9 @@ function App() {
     ) : page === 1 ? (
       <InstructionsPage />
     ) : page === songs.length + 2 ? (
-      <EndPage />
+      <EndPage page={page} />
+    ) : page > songs.length + 2 ? (
+      <ThankYouPage />
     ) : (
       <MyFormPage
         songName={songs[page - 2].songName}
@@ -83,7 +86,7 @@ function App() {
             <Button
               sx={{
                 position: "relative",
-                display: "inline-block",
+                display: page > songs.length + 2 ? "none" : "inline-block",
                 margin: "10px auto auto",
                 float: "left",
                 // disable if page==1
@@ -111,7 +114,10 @@ function App() {
             <Button
               sx={{
                 position: "relative",
-                display: page === 0 ? "none" : "inline-block",
+                display:
+                  page === 0 || page >= songs.length + 2
+                    ? "none"
+                    : "inline-block",
                 margin: "10px auto auto",
                 float: "right",
                 "&:hover": {
@@ -131,7 +137,7 @@ function App() {
             <Button
               sx={{
                 position: "relative",
-                display: "inline-block",
+                display: page > songs.length + 2 ? "none" : "inline-block",
                 margin: "10px auto auto",
                 float: "right",
                 "&:hover": {
@@ -141,9 +147,7 @@ function App() {
                 backgroundColor: "#56cfe1",
                 color: "white",
               }}
-              onClick={() =>
-                updatePage(page === songs.length + 1 ? page : page + 1)
-              }
+              onClick={() => updatePage(page + 1)}
             >
               Submit
             </Button>

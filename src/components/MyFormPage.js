@@ -24,12 +24,12 @@ export default function MyFormPage({
         setAnswers(temp.data[songName].answers);
       } else {
         setAnswers({ qtheory: "" });
-        temp.data[songName].answers = answers;
+        temp.data[songName].answers = { qtheory: "" };
         localStorage.setItem("mmt-research", JSON.stringify(temp));
       }
     } else {
       setAnswers({ qtheory: "" });
-      temp.data[songName].answers = answers;
+      temp.data[songName].answers = { qtheory: "" };
       localStorage.setItem("mmt-research", JSON.stringify(temp));
     }
   }, [page]);
