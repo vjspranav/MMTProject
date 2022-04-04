@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "aws-sdk": "^2.1107.0",
+    "mongoose": "^6.2.9"
+  }
+}
