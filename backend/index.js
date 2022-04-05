@@ -42,6 +42,9 @@ exports.handler = async (event, context) => {
     const response = {
       statusCode: 200,
       body: "Success",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
     };
     return response;
   } catch (err) {

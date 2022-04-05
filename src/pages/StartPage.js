@@ -10,15 +10,19 @@ import FormControl from "@mui/material/FormControl";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const StartPage = (props) => {
-  const updatePage = props.updatePage;
-
-  const [profession, setProfession] = useState();
-  const [age, setAge] = useState();
-  const [gender, setGender] = useState(-1);
+const StartPage = ({
+  updatePage,
+  profession,
+  setProfession,
+  age,
+  setAge,
+  gender,
+  setGender,
+}) => {
   const [loading, setLoading] = useState(false);
 
   const moveNext = () => {
+    // store profession, age and gender to local storage
     setLoading(true);
     updatePage(1);
   };

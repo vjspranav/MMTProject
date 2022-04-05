@@ -13,6 +13,10 @@ import axios from "axios";
 
 function App() {
   const [page, setPage] = useState(0);
+  const [profession, setProfession] = useState();
+  const [age, setAge] = useState();
+  const [gender, setGender] = useState(-1);
+
   useEffect(() => {
     let temp = localStorage.getItem("mmt-research");
     console.log(temp);
@@ -36,7 +40,15 @@ function App() {
 
   const calculatePage = () => {
     return page === 0 ? (
-      <StartPage updatePage={updatePage} />
+      <StartPage
+        updatePage={updatePage}
+        profession={profession}
+        setProfession={setProfession}
+        age={age}
+        setAge={setAge}
+        gender={gender}
+        setGender={setGender}
+      />
     ) : page === 1 ? (
       <InstructionsPage />
     ) : page === songs.length + 2 ? (
@@ -152,13 +164,21 @@ function App() {
                 let url =
                   "https://hegezilbzh.execute-api.ap-south-1.amazonaws.com/prod/mmtAddData";
                 // axios post with data
-                const res = axios.post(url, {
-                  data: JSON.parse(localStorage.getItem("mmt-research")),
-                });
+                const res = await axios.post(
+                  url,
+                  {
+                    age,
+                    profession,
+                    gender,
+                    data: JSON.parse(localStorage.getItem("mmt-research")).data,
+                  },
+                  { mode: "no-cors" }
+                );
                 // if status is 200
                 if (res.status === 200) {
                   updatePage(page + 1);
                 } else {
+                  console.log("error: ", res);
                   alert("Error in sending data");
                 }
               }}
