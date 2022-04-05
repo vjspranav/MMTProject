@@ -1,4 +1,4 @@
-import { Card } from "@mui/material";
+import { Button, Card } from "@mui/material";
 
 export default function ThankYouPage() {
   return (
@@ -33,6 +33,23 @@ export default function ThankYouPage() {
         >
           Thank you for your time!
         </h2>
+        <Button
+          variant="contained"
+          color="primary"
+          style={{
+            margin: "10px 0",
+            width: "100%",
+            padding: "10px",
+            borderRadius: "5px",
+            border: "1px solid #56cfe1",
+          }}
+          onClick={() => {
+            localStorage.removeItem("mmt-research");
+            window.location.href = "/";
+          }}
+        >
+          Click here to submit another survey
+        </Button>
       </div>
     </Card>
   );

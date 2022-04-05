@@ -9,6 +9,7 @@ import EndPage from "./pages/EndPage";
 import { songs } from "./songsData";
 import Stepper from "./components/Stepper";
 import ThankYouPage from "./pages/ThankYouPage";
+import axios from "axios";
 
 function App() {
   const [page, setPage] = useState(0);
@@ -147,7 +148,20 @@ function App() {
                 backgroundColor: "#56cfe1",
                 color: "white",
               }}
-              onClick={() => updatePage(page + 1)}
+              onClick={async () => {
+                let url =
+                  "https://hegezilbzh.execute-api.ap-south-1.amazonaws.com/prod/mmtAddData";
+                // axios post with data
+                const res = axios.post(url, {
+                  data: JSON.parse(localStorage.getItem("mmt-research")),
+                });
+                // if status is 200
+                if (res.status === 200) {
+                  updatePage(page + 1);
+                } else {
+                  alert("Error in sending data");
+                }
+              }}
             >
               Submit
             </Button>
