@@ -167,9 +167,11 @@ function App() {
                 const res = await axios.post(
                   url,
                   {
-                    age,
-                    profession,
-                    gender,
+                    age: JSON.parse(localStorage.getItem("mmt-research")).age,
+                    profession: JSON.parse(localStorage.getItem("mmt-research"))
+                      .profession,
+                    gender: JSON.parse(localStorage.getItem("mmt-research"))
+                      .gender,
                     data: JSON.parse(localStorage.getItem("mmt-research")).data,
                   },
                   { mode: "no-cors" }

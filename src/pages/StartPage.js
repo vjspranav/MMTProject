@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 // import axios from "axios";
 
@@ -20,6 +20,17 @@ const StartPage = ({
   setGender,
 }) => {
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    let temp = localStorage.getItem("mmt-research");
+    console.log(temp);
+    if (temp) {
+      temp = JSON.parse(temp);
+      if (temp.profession) setProfession(temp.profession);
+      if (temp.age) setAge(temp.age);
+      if (temp.gender) setGender(temp.gender);
+    }
+  }, []);
 
   const moveNext = () => {
     // store profession, age and gender to local storage
@@ -136,7 +147,15 @@ const StartPage = ({
             InputProps={{ disableUnderline: true }}
             className="inputbox"
             value={profession}
-            onChange={(e) => setProfession(e.target.value)}
+            onChange={(e) => {
+              setProfession(e.target.value);
+              let temp = localStorage.getItem("mmt-research");
+              if (temp) {
+                temp = JSON.parse(temp);
+                temp.profession = e.target.value;
+                localStorage.setItem("mmt-research", JSON.stringify(temp));
+              }
+            }}
           />
           <TextField
             label="Age"
@@ -154,6 +173,12 @@ const StartPage = ({
                 (e.target.value > 0 && e.target.value < 100)
               ) {
                 setAge(parseInt(e.target.value));
+                let temp = localStorage.getItem("mmt-research");
+                if (temp) {
+                  temp = JSON.parse(temp);
+                  temp.age = parseInt(e.target.value);
+                  localStorage.setItem("mmt-research", JSON.stringify(temp));
+                }
               }
             }}
           />
@@ -163,7 +188,15 @@ const StartPage = ({
               label="Gender"
               disableUnderline
               value={gender !== -1 ? gender : ""}
-              onChange={(e) => setGender(e.target.value)}
+              onChange={(e) => {
+                setGender(e.target.value);
+                let temp = localStorage.getItem("mmt-research");
+                if (temp) {
+                  temp = JSON.parse(temp);
+                  temp.gender = parseInt(e.target.value);
+                  localStorage.setItem("mmt-research", JSON.stringify(temp));
+                }
+              }}
             >
               <MenuItem value={0}>Male</MenuItem>
               <MenuItem value={1}>Female</MenuItem>
